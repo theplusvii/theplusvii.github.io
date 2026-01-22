@@ -1,63 +1,268 @@
 <!doctype html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>theplusvii</title>
+
   <style>
-    body {
-      margin: 0;
-      height: 100vh;
-      display: grid;
-      place-items: center;
-      background: radial-gradient(circle at top, #111 0%, #050507 60%);
-      color: white;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    :root{
+      --bg0:#050507;
+      --bg1:#0b0b10;
+      --text:#ffffff;
+      --muted:rgba(255,255,255,.72);
+      --border:rgba(255,255,255,.12);
+      --border2:rgba(255,255,255,.08);
+      --glass1:rgba(255,255,255,.08);
+      --glass2:rgba(255,255,255,.03);
+      --link:#9ae6ff;
+      --shadow:rgba(0,0,0,.55);
     }
-    .card {
-      width: min(720px, 92vw);
-      padding: 36px;
-      border-radius: 20px;
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.08);
-      backdrop-filter: blur(8px);
+
+    *{ box-sizing:border-box; }
+
+    body{
+      margin:0;
+      min-height:100vh;
+      display:grid;
+      place-items:center;
+      color:var(--text);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      background:
+        radial-gradient(circle at top, #121217 0%, var(--bg0) 55%),
+        radial-gradient(circle at 70% 120%, #0b1320 0%, transparent 55%),
+        linear-gradient(180deg, var(--bg1), var(--bg0));
+      overflow:hidden;
     }
-    h1 {
-      margin: 0 0 10px;
-      font-size: 38px;
-      letter-spacing: 0.5px;
+
+    /* ====== Background layers ====== */
+    .bg{
+      position:fixed;
+      inset:0;
+      overflow:hidden;
+      z-index:-1;
     }
-    p {
-      opacity: 0.75;
-      margin-bottom: 22px;
+
+    .glow{
+      position:absolute;
+      width:680px;
+      height:680px;
+      border-radius:50%;
+      filter:blur(78px);
+      opacity:.34;
+      animation: floaty 10s ease-in-out infinite;
+      will-change: transform;
+    }
+    .glow.one{ top:-260px; left:-200px; background:#3b82f6; }
+    .glow.two{ bottom:-300px; right:-240px; background:#a855f7; animation-delay:-3s; }
+    .glow.three{
+      top:42%;
+      left:66%;
+      width:520px;
+      height:520px;
+      background:#22c55e;
+      opacity:.16;
+      animation-delay:-6s;
+    }
+
+    .stars{
+      position:absolute;
+      inset:-50%;
+      background-image:
+        radial-gradient(1px 1px at 10% 20%, rgba(255,255,255,0.38) 40%, transparent 41%),
+        radial-gradient(1px 1px at 30% 80%, rgba(255,255,255,0.26) 40%, transparent 41%),
+        radial-gradient(1px 1px at 70% 40%, rgba(255,255,255,0.22) 40%, transparent 41%),
+        radial-gradient(1px 1px at 90% 10%, rgba(255,255,255,0.32) 40%, transparent 41%),
+        radial-gradient(1px 1px at 45% 55%, rgba(255,255,255,0.18) 40%, transparent 41%),
+        radial-gradient(1px 1px at 60% 75%, rgba(255,255,255,0.15) 40%, transparent 41%),
+        radial-gradient(1px 1px at 20% 60%, rgba(255,255,255,0.14) 40%, transparent 41%),
+        radial-gradient(1px 1px at 82% 62%, rgba(255,255,255,0.12) 40%, transparent 41%);
+      background-size: 240px 240px;
+      animation: drift 18s linear infinite;
+      opacity:.55;
+      transform: translate3d(0,0,0);
+      will-change: transform;
+    }
+
+    .grain{
+      position:absolute;
+      inset:0;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='.18'/%3E%3C/svg%3E");
+      mix-blend-mode: overlay;
+      opacity:.14;
+      pointer-events:none;
+    }
+
+    @keyframes drift{
+      from{ transform: translate3d(0,0,0); }
+      to{ transform: translate3d(200px,120px,0); }
+    }
+    @keyframes floaty{
+      0%,100%{ transform: translate3d(0,0,0); }
+      50%{ transform: translate3d(0,26px,0); }
+    }
+
+    /* ====== Card ====== */
+    .wrap{
+      width:min(820px, 92vw);
+      padding: 24px 0;
+    }
+
+    .card{
+      width:100%;
+      padding: 40px;
+      border-radius: 22px;
+      background: linear-gradient(180deg, var(--glass1), var(--glass2));
+      border: 1px solid var(--border);
+      box-shadow:
+        0 10px 44px var(--shadow),
+        inset 0 1px 0 rgba(255,255,255,0.08);
+      backdrop-filter: blur(10px);
+      position:relative;
+      overflow:hidden;
+    }
+
+    .card::before{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      background: radial-gradient(700px circle at 18% 0%, rgba(255,255,255,0.12), transparent 45%);
+      pointer-events:none;
+    }
+
+    .top{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap: 18px;
+      position:relative;
+      z-index:1;
+    }
+
+    h1{
+      margin:0 0 10px;
+      font-size: 40px;
+      letter-spacing:.6px;
+      line-height:1.05;
+    }
+
+    .tagline{
+      margin:0;
+      color:var(--muted);
       font-size: 16px;
     }
-    .links a {
-      display: inline-block;
-      margin-right: 14px;
-      margin-bottom: 10px;
-      padding: 10px 14px;
-      border-radius: 12px;
-      border: 1px solid rgba(255,255,255,0.12);
-      text-decoration: none;
-      color: #9ae6ff;
-      transition: background 0.15s ease, transform 0.15s ease;
+
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding: 10px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--border2);
+      background: rgba(255,255,255,0.04);
+      white-space:nowrap;
+      color: rgba(255,255,255,0.78);
+      font-size: 13px;
+      position:relative;
+      z-index:1;
     }
-    .links a:hover {
-      background: rgba(255,255,255,0.08);
+
+    .dot{
+      width:8px;
+      height:8px;
+      border-radius:50%;
+      background: #22c55e;
+      box-shadow: 0 0 14px rgba(34,197,94,.55);
+    }
+
+    .links{
+      display:flex;
+      flex-wrap:wrap;
+      gap: 12px;
+      margin-top: 22px;
+      position:relative;
+      z-index:1;
+    }
+
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      padding: 11px 14px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(255,255,255,0.04);
+      color: var(--link);
+      text-decoration:none;
+      transition: transform .15s ease, background .15s ease, border-color .15s ease;
+      user-select:none;
+    }
+    .btn:hover{
       transform: translateY(-1px);
+      background: rgba(255,255,255,0.08);
+      border-color: rgba(255,255,255,0.22);
+    }
+
+    .sub{
+      margin-top: 18px;
+      color: rgba(255,255,255,0.66);
+      font-size: 13px;
+      position:relative;
+      z-index:1;
+    }
+
+    .sub a{
+      color: rgba(255,255,255,0.78);
+      text-decoration:none;
+      border-bottom: 1px solid rgba(255,255,255,0.18);
+    }
+    .sub a:hover{ color: #fff; border-bottom-color: rgba(255,255,255,0.45); }
+
+    /* Mobile polish */
+    @media (max-width: 520px){
+      .card{ padding: 28px; }
+      h1{ font-size: 32px; }
+      .top{ flex-direction:column; align-items:flex-start; }
+      .pill{ padding: 9px 12px; }
+      .btn{ width:100%; }
     }
   </style>
 </head>
+
 <body>
-  <div class="card">
-    <h1>theplusvii</h1>
-    <p>Developer · Creator · Roblox</p>
-    <div class="links">
-      <a href="https://github.com/theplusvii">GitHub</a>
-      <a href="https://www.roblox.com/">Roblox</a>
-      <a href="#">Discord</a>
-    </div>
+  <div class="bg" aria-hidden="true">
+    <div class="glow one"></div>
+    <div class="glow two"></div>
+    <div class="glow three"></div>
+    <div class="stars"></div>
+    <div class="grain"></div>
   </div>
+
+  <main class="wrap">
+    <section class="card">
+      <div class="top">
+        <div>
+          <h1>theplusvii</h1>
+          <p class="tagline">Developer · Creator · Roblox</p>
+        </div>
+
+        <div class="pill" title="Online">
+          <span class="dot"></span>
+          <span>Bio Links</span>
+        </div>
+      </div>
+
+      <nav class="links" aria-label="Links">
+        <a class="btn" href="https://github.com/theplusvii" target="_blank" rel="noreferrer">GitHub</a>
+        <a class="btn" href="https://www.roblox.com/users/4190899410/profile" target="_blank" rel="noreferrer">Roblox</a>
+        <a class="btn" href="https://discord.gg/vqQycdnQ" target="_blank" rel="noreferrer">Discord</a>
+      </nav>
+
+      <div class="sub">
+        Tip: edit this page by opening <strong>index.html</strong> in your repo and changing the name/tagline/links.
+      </div>
+    </section>
+  </main>
 </body>
 </html>
