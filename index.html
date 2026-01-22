@@ -9,41 +9,41 @@
     :root{
       --bg:#060607;
       --text:#ffffff;
-      --muted:rgba(255,255,255,.72);
+      --muted:rgba(255,255,255,.70);
+      --muted2:rgba(255,255,255,.55);
       --border:rgba(255,255,255,.12);
       --border2:rgba(255,255,255,.08);
       --glass1:rgba(255,255,255,.07);
       --glass2:rgba(255,255,255,.03);
-      --link:#bfefff;
       --shadow:rgba(0,0,0,.62);
+      --link:#bfefff;
+      --blue:#3b82f6;
     }
 
     *{ box-sizing:border-box; }
+    html{ scroll-behavior:smooth; }
 
     body{
       margin:0;
       min-height:100vh;
-      display:grid;
-      place-items:center;
       color:var(--text);
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
       background: var(--bg);
-      overflow:hidden;
+      overflow-x:hidden;
     }
 
-    /* ===== Background (black + stars + floating balls + small grey glow) ===== */
+    /* ===== Background (black + stars + floating grey balls + subtle grey glow) ===== */
     .bg{
       position:fixed;
       inset:0;
       z-index:-1;
       overflow:hidden;
       background:
-        radial-gradient(500px circle at 50% 20%, rgba(255,255,255,0.06), transparent 60%),
+        radial-gradient(520px circle at 50% 18%, rgba(255,255,255,0.06), transparent 60%),
         radial-gradient(900px circle at 50% 110%, rgba(255,255,255,0.03), transparent 55%),
         linear-gradient(180deg, #050506, #060607);
     }
 
-    /* Subtle starfield */
     .stars{
       position:absolute;
       inset:-50%;
@@ -61,7 +61,6 @@
         radial-gradient(1px 1px at 92% 52%, rgba(255,255,255,0.14) 45%, transparent 46%),
         radial-gradient(1px 1px at 12% 52%, rgba(255,255,255,0.12) 45%, transparent 46%),
         radial-gradient(1px 1px at 52% 52%, rgba(255,255,255,0.10) 45%, transparent 46%);
-
       background-size: 260px 260px;
       animation: starDrift 22s linear infinite;
       will-change: transform;
@@ -73,12 +72,10 @@
       to   { transform: translate3d(190px,120px,0); }
     }
 
-    /* Floating balls (soft grey orbs) */
     .orbs{
       position:absolute;
       inset:0;
       pointer-events:none;
-      filter: blur(0px);
     }
 
     .orb{
@@ -87,25 +84,23 @@
       background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.13), rgba(255,255,255,0.02) 55%, transparent 70%);
       border: 1px solid rgba(255,255,255,0.06);
       box-shadow: 0 0 30px rgba(255,255,255,0.03);
-      opacity: .95;
+      opacity: .9;
       animation: floaty var(--dur) ease-in-out infinite;
       will-change: transform;
     }
 
-    /* Place a handful manually so it always looks good */
     .o1{ width:160px; height:160px; left:10%; top:18%; --dur: 10s; }
-    .o2{ width:110px; height:110px; left:72%; top:14%; --dur: 12s; opacity:.75; }
-    .o3{ width:210px; height:210px; left:78%; top:62%; --dur: 14s; opacity:.70; }
-    .o4{ width:130px; height:130px; left:18%; top:68%; --dur: 11s; opacity:.60; }
-    .o5{ width:90px;  height:90px;  left:46%; top:78%; --dur: 9s;  opacity:.55; }
-    .o6{ width:70px;  height:70px;  left:54%; top:26%; --dur: 8s;  opacity:.50; }
+    .o2{ width:110px; height:110px; left:72%; top:14%; --dur: 12s; opacity:.72; }
+    .o3{ width:210px; height:210px; left:78%; top:62%; --dur: 14s; opacity:.68; }
+    .o4{ width:130px; height:130px; left:18%; top:68%; --dur: 11s; opacity:.58; }
+    .o5{ width:90px;  height:90px;  left:46%; top:78%; --dur: 9s;  opacity:.50; }
+    .o6{ width:70px;  height:70px;  left:54%; top:26%; --dur: 8s;  opacity:.46; }
 
     @keyframes floaty{
       0%,100% { transform: translate3d(0,0,0); }
       50%     { transform: translate3d(0, 22px, 0); }
     }
 
-    /* Tiny grain to keep it from looking flat */
     .grain{
       position:absolute;
       inset:0;
@@ -115,14 +110,15 @@
       pointer-events:none;
     }
 
-    /* ===== Card ===== */
-    .wrap{
-      width:min(820px, 92vw);
-      padding: 24px 0;
+    /* ===== Layout ===== */
+    .container{
+      width:min(1100px, 92vw);
+      margin: 0 auto;
+      padding: 44px 0 90px;
     }
 
+    /* ===== Bio card ===== */
     .card{
-      width:100%;
       padding: 40px;
       border-radius: 22px;
       background: linear-gradient(180deg, var(--glass1), var(--glass2));
@@ -154,7 +150,7 @@
 
     h1{
       margin:0 0 10px;
-      font-size: 40px;
+      font-size: 42px;
       letter-spacing:.6px;
       line-height:1.05;
     }
@@ -216,20 +212,202 @@
       border-color: rgba(255,255,255,0.22);
     }
 
+    .ghostBtn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding: 11px 14px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(0,0,0,0.12);
+      color: rgba(255,255,255,0.75);
+      text-decoration:none;
+      transition: transform .15s ease, background .15s ease, border-color .15s ease;
+    }
+    .ghostBtn:hover{
+      transform: translateY(-1px);
+      background: rgba(255,255,255,0.05);
+      border-color: rgba(255,255,255,0.20);
+    }
+
     .sub{
       margin-top: 18px;
-      color: rgba(255,255,255,0.60);
+      color: var(--muted2);
       font-size: 13px;
       position:relative;
       z-index:1;
     }
 
+    /* ===== Games section ===== */
+    .gamesSection{
+      margin-top: 46px;
+      text-align:center;
+    }
+
+    .gamesTitle{
+      margin: 10px 0 6px;
+      letter-spacing: 6px;
+      font-weight: 700;
+      font-size: 30px;
+    }
+
+    .gamesSub{
+      margin: 0 0 18px;
+      color: rgba(255,255,255,.62);
+      font-size: 15px;
+    }
+
+    .gamesStats{
+      display:flex;
+      gap: 14px;
+      justify-content:center;
+      flex-wrap:wrap;
+      margin-bottom: 18px;
+    }
+
+    .statPill{
+      display:flex;
+      align-items:center;
+      gap: 10px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.04);
+      color: rgba(255,255,255,.75);
+    }
+
+    .statPill strong{
+      color: #fff;
+      font-size: 16px;
+    }
+
+    .carouselWrap{
+      position:relative;
+      margin-top: 8px;
+    }
+
+    .carousel{
+      display:flex;
+      gap: 16px;
+      overflow-x:auto;
+      scroll-behavior:smooth;
+      padding: 10px 52px 14px;
+      scrollbar-width: none;
+    }
+    .carousel::-webkit-scrollbar{ display:none; }
+
+    .navBtn{
+      position:absolute;
+      top:50%;
+      transform: translateY(-50%);
+      width: 42px;
+      height: 42px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.35);
+      color: #fff;
+      cursor:pointer;
+      backdrop-filter: blur(6px);
+      transition: transform .15s ease, background .15s ease, border-color .15s ease;
+    }
+    .navBtn:hover{
+      transform: translateY(-50%) scale(1.03);
+      background: rgba(255,255,255,.06);
+      border-color: rgba(255,255,255,.22);
+    }
+    .navBtn.left{ left: 6px; }
+    .navBtn.right{ right: 6px; }
+
+    .gameCard{
+      min-width: 340px;
+      max-width: 340px;
+      border-radius: 18px;
+      overflow:hidden;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.03);
+      box-shadow: 0 10px 34px rgba(0,0,0,.45);
+      transition: transform .18s ease, border-color .18s ease, background .18s ease;
+    }
+    .gameCard:hover{
+      transform: translateY(-2px);
+      border-color: rgba(255,255,255,.22);
+      background: rgba(255,255,255,.04);
+    }
+
+    .gameThumb{
+      height: 190px;
+      display:block;
+      width:100%;
+      object-fit: cover;
+      background:
+        radial-gradient(500px circle at 30% 20%, rgba(255,255,255,0.10), transparent 45%),
+        linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+    }
+
+    .gameBody{
+      padding: 14px 14px 16px;
+      text-align:left;
+    }
+
+    .gameName{
+      font-size: 24px;
+      margin: 0 0 10px;
+      line-height: 1.15;
+    }
+
+    .metaRow{
+      display:flex;
+      gap: 10px;
+      flex-wrap:wrap;
+      margin-bottom: 12px;
+    }
+
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap: 8px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.04);
+      color: rgba(255,255,255,.78);
+      font-size: 13px;
+    }
+
+    .playBtn{
+      display:block;
+      width:100%;
+      text-align:center;
+      padding: 12px 14px;
+      border-radius: 14px;
+      text-decoration:none;
+      color:#fff;
+      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(59,130,246,.92);
+      transition: filter .15s ease, transform .15s ease;
+    }
+    .playBtn:hover{
+      filter: brightness(1.05);
+      transform: translateY(-1px);
+    }
+
+    .statusLine{
+      margin-top: 10px;
+      font-size: 12px;
+      color: rgba(255,255,255,.48);
+    }
+
+    /* Mobile */
     @media (max-width: 520px){
+      .container{ padding: 34px 0 70px; }
       .card{ padding: 28px; }
-      h1{ font-size: 32px; }
+      h1{ font-size: 34px; }
       .top{ flex-direction:column; align-items:flex-start; }
-      .pill{ padding: 9px 12px; }
-      .btn{ width:100%; }
+      .btn, .ghostBtn{ width:100%; }
+      .gameCard{ min-width: 270px; max-width: 270px; }
+      .gamesTitle{ font-size: 24px; letter-spacing: 4px; }
+      .navBtn{ display:none; } /* swipe instead */
+      .carousel{ padding-left: 10px; padding-right: 10px; }
     }
   </style>
 </head>
@@ -237,7 +415,6 @@
 <body>
   <div class="bg" aria-hidden="true">
     <div class="stars"></div>
-
     <div class="orbs">
       <div class="orb o1"></div>
       <div class="orb o2"></div>
@@ -246,11 +423,11 @@
       <div class="orb o5"></div>
       <div class="orb o6"></div>
     </div>
-
     <div class="grain"></div>
   </div>
 
-  <main class="wrap">
+  <main class="container">
+    <!-- BIO CARD -->
     <section class="card">
       <div class="top">
         <div>
@@ -258,7 +435,7 @@
           <p class="tagline">Developer · Creator · Roblox</p>
         </div>
 
-        <div class="pill" title="Links">
+        <div class="pill" title="Status">
           <span class="dot"></span>
           <span>Bio Links</span>
         </div>
@@ -268,12 +445,154 @@
         <a class="btn" href="https://github.com/theplusvii" target="_blank" rel="noreferrer">GitHub</a>
         <a class="btn" href="https://www.roblox.com/users/4190899410/profile" target="_blank" rel="noreferrer">Roblox</a>
         <a class="btn" href="https://discord.gg/vqQycdnQ" target="_blank" rel="noreferrer">Discord</a>
+        <a class="ghostBtn" href="#games">Scroll to Games ↓</a>
       </nav>
 
-      <div class="sub">
-        Edit <strong>index.html</strong> in your repo to change text/links.
+      <div class="sub">Tip: edit <strong>index.html</strong> in your repo to change text/links.</div>
+    </section>
+
+    <!-- GAMES -->
+    <section class="gamesSection" id="games">
+      <h2 class="gamesTitle">OUR GAMES</h2>
+      <p class="gamesSub">Explore our collection of immersive Roblox experiences</p>
+
+      <div class="gamesStats">
+        <div class="statPill"><span>👥</span><strong id="statPlaying">—</strong><span>playing now</span></div>
+        <div class="statPill"><span>▶</span><strong id="statVisits">—</strong><span>total visits</span></div>
       </div>
+
+      <div class="carouselWrap">
+        <button class="navBtn left" id="leftBtn" aria-label="Scroll left">‹</button>
+        <div class="carousel" id="gamesCarousel" aria-label="Games carousel"></div>
+        <button class="navBtn right" id="rightBtn" aria-label="Scroll right">›</button>
+      </div>
+
+      <div class="statusLine" id="statusLine">Updating…</div>
     </section>
   </main>
+
+  <script>
+    // ===== CONFIG (yours) =====
+    const WORKER_URL = "https://plusviiwebworker.loganplayzu.workers.dev/";
+    const UNIVERSE_IDS = [
+      131017193502384,
+      91653443137127,
+      82147631157822
+    ];
+
+    // ===== DOM =====
+    const $carousel = document.getElementById("gamesCarousel");
+    const $playing = document.getElementById("statPlaying");
+    const $visits = document.getElementById("statVisits");
+    const $status = document.getElementById("statusLine");
+
+    // ===== Helpers =====
+    function formatCompact(n){
+      n = Number(n) || 0;
+      if (n >= 1e9) return (n/1e9).toFixed(1).replace(/\.0$/,'') + "B";
+      if (n >= 1e6) return (n/1e6).toFixed(1).replace(/\.0$/,'') + "M";
+      if (n >= 1e3) return (n/1e3).toFixed(1).replace(/\.0$/,'') + "K";
+      return String(n);
+    }
+
+    function escapeHtml(s){
+      return String(s).replace(/[&<>"']/g, c => ({
+        "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+      }[c]));
+    }
+
+    function timeStamp(){
+      const d = new Date();
+      const hh = String(d.getHours()).padStart(2,"0");
+      const mm = String(d.getMinutes()).padStart(2,"0");
+      const ss = String(d.getSeconds()).padStart(2,"0");
+      return `${hh}:${mm}:${ss}`;
+    }
+
+    // Thumbnails: try direct (may fail due to CORS). If it fails, we still show cards.
+    async function fetchThumbnails(universeIds){
+      try{
+        const url = `https://thumbnails.roblox.com/v1/games/icons?universeIds=${universeIds.join(",")}&size=768x432&format=Png&isCircular=false`;
+        const r = await fetch(url);
+        const j = await r.json();
+        const map = new Map();
+        for (const it of (j.data || [])) map.set(it.targetId, it.imageUrl);
+        return map;
+      } catch {
+        return new Map();
+      }
+    }
+
+    function renderCards(games, thumbMap){
+      $carousel.innerHTML = "";
+      for (const g of games){
+        const thumb = thumbMap.get(g.id) || "";
+        const placeUrl = `https://www.roblox.com/games/${g.rootPlaceId}`;
+
+        const card = document.createElement("div");
+        card.className = "gameCard";
+        card.innerHTML = `
+          ${thumb ? `<img class="gameThumb" src="${thumb}" alt="">` : `<div class="gameThumb"></div>`}
+          <div class="gameBody">
+            <h3 class="gameName">${escapeHtml(g.name || "Untitled")}</h3>
+            <div class="metaRow">
+              <span class="badge">👥 ${formatCompact(g.playing || 0)}</span>
+              <span class="badge">▶ ${formatCompact(g.visits || 0)}</span>
+            </div>
+            <a class="playBtn" href="${placeUrl}" target="_blank" rel="noreferrer">Play Now</a>
+          </div>
+        `;
+        $carousel.appendChild(card);
+      }
+    }
+
+    async function refresh(){
+      if (!UNIVERSE_IDS.length){
+        $playing.textContent = "—";
+        $visits.textContent = "—";
+        $carousel.innerHTML = `<div style="color:rgba(255,255,255,.7);padding:14px;">Add universe IDs in the script.</div>`;
+        $status.textContent = "Missing universe IDs.";
+        return;
+      }
+
+      const ids = UNIVERSE_IDS.join(",");
+      $status.textContent = "Updating…";
+
+      try{
+        const r = await fetch(`${WORKER_URL}?ids=${encodeURIComponent(ids)}`);
+        const j = await r.json();
+        const games = (j.data || []).slice();
+
+        // totals
+        let totalPlaying = 0;
+        let totalVisits = 0;
+        for (const g of games){
+          totalPlaying += (g.playing || 0);
+          totalVisits += (g.visits || 0);
+        }
+        $playing.textContent = formatCompact(totalPlaying);
+        $visits.textContent = formatCompact(totalVisits);
+
+        // sort: most playing first (feels nicer)
+        games.sort((a,b) => (b.playing||0) - (a.playing||0));
+
+        // thumbs (non-blocking)
+        const thumbs = await fetchThumbnails(UNIVERSE_IDS);
+        renderCards(games, thumbs);
+
+        $status.textContent = `Last updated: ${timeStamp()} (auto refresh every 30s)`;
+      } catch (e){
+        $status.textContent = `Update failed at ${timeStamp()} — check Worker URL.`;
+      }
+    }
+
+    // arrows
+    document.getElementById("leftBtn").onclick = () => $carousel.scrollBy({ left: -420, behavior: "smooth" });
+    document.getElementById("rightBtn").onclick = () => $carousel.scrollBy({ left: 420, behavior: "smooth" });
+
+    // load + poll
+    refresh();
+    setInterval(refresh, 30000);
+  </script>
 </body>
 </html>
