@@ -339,7 +339,7 @@
     const fmt = n => n>=1e6?(n/1e6).toFixed(1)+"M":n>=1e3?(n/1e3).toFixed(1)+"K":n;
 
     async function load(){
-      const r = await fetch(`${WORKER_URL}?ids=${UNIVERSE_IDS.join(",")}`);
+      const r = await fetch(`${WORKER_URL}?ids=${UNIVERSE_IDS.join(",")}&_=${Date.now()}`, { cache: "no-store" });
       const j = await r.json();
       const games = j.data || [];
 
@@ -348,7 +348,7 @@
       $playing.textContent = fmt(p);
       $visits.textContent  = fmt(v);
 
-      const t = await fetch(`${WORKER_URL}thumbs?ids=${UNIVERSE_IDS.join(",")}`);
+      const t = await fetch(`${WORKER_URL}thumbs?ids=${UNIVERSE_IDS.join(",")}&_=${Date.now()}`, { cache: "no-store" });
       const tj = await t.json();
       const thumbs = new Map();
       tj.data?.forEach(e=>{
@@ -356,7 +356,9 @@
           thumbs.set(String(e.universeId), e.thumbnails[0].imageUrl);
         }
       });
-
+      
+      $carousel.innerHTML = "";
+      
       games.forEach(g=>{
         const img = thumbs.get(String(g.id));
         const el = document.createElement("div");
