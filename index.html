@@ -309,6 +309,7 @@
       cursor:pointer;
       backdrop-filter: blur(6px);
       transition: transform .15s ease, background .15s ease, border-color .15s ease;
+      z-index: 2;
     }
     .navBtn:hover{
       transform: translateY(-50%) scale(1.03);
@@ -332,6 +333,18 @@
       transform: translateY(-2px);
       border-color: rgba(255,255,255,.22);
       background: rgba(255,255,255,.04);
+    }
+
+    /* Thumbnail + bottom fade (for readability) */
+    .gameThumbWrap{
+      position: relative;
+    }
+    .gameThumbWrap::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background: linear-gradient(180deg, transparent 35%, rgba(0,0,0,.70) 100%);
+      pointer-events:none;
     }
 
     .gameThumb{
@@ -454,7 +467,7 @@
     <!-- GAMES -->
     <section class="gamesSection" id="games">
       <h2 class="gamesTitle">MY GAMES</h2>
-      <p class="gamesSub">All games created by @theplusvii</p>
+      <p class="gamesSub">Explore my collection of immersive Roblox experiences</p>
 
       <div class="gamesStats">
         <div class="statPill"><span>👥</span><strong id="statPlaying">—</strong><span>playing now</span></div>
@@ -467,147 +480,136 @@
         <button class="navBtn right" id="rightBtn" aria-label="Scroll right">›</button>
       </div>
 
-      <div class="statusLine" id="statusLine">Updating…</div>
+      <div class="statusLine" id="statusLine">Loading…</div>
     </section>
   </main>
 
-<script>
-  const WORKER_URL = "https://plusviiwebworker.loganplayzu.workers.dev/";
-  const UNIVERSE_IDS = ["9535197929","7314795657","9061511409"]; // these ARE universe IDs
+  <script>
+    // Your Worker + universe IDs (these work with games.roblox.com/v1/games?universeIds=...)
+    const WORKER_URL = "https://plusviiwebworker.loganplayzu.workers.dev/";
+    const UNIVERSE_IDS = ["9535197929","7314795657","9061511409"];
 
-  const $carousel = document.getElementById("gamesCarousel");
-  const $playing  = document.getElementById("statPlaying");
-  const $visits   = document.getElementById("statVisits");
-  const $status   = document.getElementById("statusLine");
+    const $carousel = document.getElementById("gamesCarousel");
+    const $playing  = document.getElementById("statPlaying");
+    const $visits   = document.getElementById("statVisits");
+    const $status   = document.getElementById("statusLine");
 
-  function formatCompact(n){
-    n = Number(n) || 0;
-    if (n >= 1e9) return (n/1e9).toFixed(1).replace(/\.0$/,'') + "B";
-    if (n >= 1e6) return (n/1e6).toFixed(1).replace(/\.0$/,'') + "M";
-    if (n >= 1e3) return (n/1e3).toFixed(1).replace(/\.0$/,'') + "K";
-    return String(n);
-  }
-
-  function escapeHtml(s){
-    return String(s).replace(/[&<>"']/g, c => ({
-      "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
-    }[c]));
-  }
-
-  function timeStamp(){
-    const d = new Date();
-    return d.toLocaleTimeString([], { hour: "2-digit", minute:"2-digit", second:"2-digit" });
-  }
-
-  async function fetchThumbnails(universeIds){
-    // Get wide thumbnails via Worker to avoid CORS
-    try{
-      const ids = universeIds.join(",");
-      const r = await fetch(`${WORKER_URL}thumbs?ids=${encodeURIComponent(ids)}`);
-      const j = await r.json();
-
-      // Roblox thumbnail responses vary slightly by endpoint; normalize into map(targetId->imageUrl)
-      const map = new Map();
-
-      // common patterns:
-      // { data: [ { targetId, imageUrl } ] }
-      if (Array.isArray(j.data)) {
-        for (const it of j.data) {
-          const tid = it.targetId ?? it.universeId ?? it.id;
-          const url = it.imageUrl ?? it.thumbnailUrl ?? it.url;
-          if (tid && url) map.set(String(tid), url);
-        }
-      }
-
-      // sometimes: { thumbnails: [...] }
-      if (Array.isArray(j.thumbnails)) {
-        for (const it of j.thumbnails) {
-          const tid = it.targetId ?? it.universeId ?? it.id;
-          const url = it.imageUrl ?? it.thumbnailUrl ?? it.url;
-          if (tid && url) map.set(String(tid), url);
-        }
-      }
-
-      return map;
-    } catch {
-      return new Map();
+    function formatCompact(n){
+      n = Number(n) || 0;
+      if (n >= 1e9) return (n/1e9).toFixed(1).replace(/\.0$/,'') + "B";
+      if (n >= 1e6) return (n/1e6).toFixed(1).replace(/\.0$/,'') + "M";
+      if (n >= 1e3) return (n/1e3).toFixed(1).replace(/\.0$/,'') + "K";
+      return String(n);
     }
-  }
 
-  function renderCards(games, thumbMap){
-    $carousel.innerHTML = "";
-
-    for (const g of games){
-      // IMPORTANT:
-      // g.id = universeId (for thumbs)
-      // g.rootPlaceId = placeId (for Play link)
-      const thumb = thumbMap.get(String(g.id)) || "";
-      const placeUrl = `https://www.roblox.com/games/${g.rootPlaceId}`;
-
-      const card = document.createElement("div");
-      card.className = "gameCard";
-      card.innerHTML = `
-        ${thumb ? `<img class="gameThumb" src="${thumb}" alt="">` : `<div class="gameThumb"></div>`}
-        <div class="gameBody">
-          <h3 class="gameName">${escapeHtml(g.name || "Untitled")}</h3>
-          <div class="metaRow">
-            <span class="badge">👥 ${formatCompact(g.playing || 0)}</span>
-            <span class="badge">▶ ${formatCompact(g.visits || 0)}</span>
-          </div>
-          <a class="playBtn" href="${placeUrl}" target="_blank" rel="noreferrer">Play Now</a>
-        </div>
-      `;
-      $carousel.appendChild(card);
+    function escapeHtml(s){
+      return String(s).replace(/[&<>"']/g, c => ({
+        "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+      }[c]));
     }
-  }
 
-  async function loadOnce(){
-    $status.textContent = "Loading…";
+    function timeStamp(){
+      const d = new Date();
+      return d.toLocaleTimeString([], { hour: "2-digit", minute:"2-digit", second:"2-digit" });
+    }
 
-    const ids = UNIVERSE_IDS.join(",");
-    const url = `${WORKER_URL}?ids=${encodeURIComponent(ids)}`;
+    async function fetchThumbnails(universeIds){
+      try{
+        // Worker returns: { data: [ { universeId, thumbnails: [ { imageUrl } ] } ] }
+        const ids = universeIds.join(",");
+        const r = await fetch(`${WORKER_URL}thumbs?ids=${encodeURIComponent(ids)}`);
+        const j = await r.json();
 
-    try{
-      const r = await fetch(url);
-      const j = await r.json();
-      const games = (j.data || []).slice();
-
-      if (!games.length){
-        // Don’t wipe the carousel if this ever happens later
-        $playing.textContent = "0";
-        $visits.textContent = "0";
-        $status.textContent = `Loaded: ${timeStamp()} (0 games returned)`;
-        return;
+        const map = new Map();
+        for (const entry of (j.data || [])){
+          const u = entry.universeId;
+          const img = entry.thumbnails && entry.thumbnails[0] && entry.thumbnails[0].imageUrl;
+          if (u && img) map.set(String(u), img);
+        }
+        return map;
+      } catch {
+        return new Map();
       }
+    }
 
-      // totals
-      let totalPlaying = 0, totalVisits = 0;
+    function renderCards(games, thumbMap){
+      $carousel.innerHTML = "";
+
       for (const g of games){
-        totalPlaying += (g.playing || 0);
-        totalVisits  += (g.visits || 0);
+        // g.id = universeId, g.rootPlaceId = placeId
+        const universeId = String(g.id);
+        const thumb = thumbMap.get(universeId) || "";
+        const placeUrl = `https://www.roblox.com/games/${g.rootPlaceId}`;
+
+        const card = document.createElement("div");
+        card.className = "gameCard";
+
+        const thumbHtml = thumb
+          ? `<div class="gameThumbWrap">
+               <img class="gameThumb" src="${thumb}" alt="${escapeHtml(g.name || "Game")}">
+             </div>`
+          : `<div class="gameThumb"></div>`;
+
+        card.innerHTML = `
+          ${thumbHtml}
+          <div class="gameBody">
+            <h3 class="gameName">${escapeHtml(g.name || "Untitled")}</h3>
+            <div class="metaRow">
+              <span class="badge">👥 ${formatCompact(g.playing || 0)}</span>
+              <span class="badge">▶ ${formatCompact(g.visits || 0)}</span>
+            </div>
+            <a class="playBtn" href="${placeUrl}" target="_blank" rel="noreferrer">Play Now</a>
+          </div>
+        `;
+
+        $carousel.appendChild(card);
       }
-      $playing.textContent = formatCompact(totalPlaying);
-      $visits.textContent  = formatCompact(totalVisits);
-
-      // sort by visits (feels nicer) - change to playing if you want
-      games.sort((a,b) => (b.visits||0) - (a.visits||0));
-
-      // thumbs
-      const thumbs = await fetchThumbnails(UNIVERSE_IDS);
-
-      renderCards(games, thumbs);
-      $status.textContent = `Loaded: ${timeStamp()} (updates only when opened)`;
-    } catch {
-      $status.textContent = `Load failed: ${timeStamp()} (check Worker)`;
     }
-  }
 
-  // arrows
-  document.getElementById("leftBtn").onclick  = () => $carousel.scrollBy({ left: -420, behavior: "smooth" });
-  document.getElementById("rightBtn").onclick = () => $carousel.scrollBy({ left: 420, behavior: "smooth" });
+    async function loadOnce(){
+      $status.textContent = "Loading…";
 
-  // Load only once (no interval)
-  loadOnce();
-</script>
+      const ids = UNIVERSE_IDS.join(",");
+      const url = `${WORKER_URL}?ids=${encodeURIComponent(ids)}`;
+
+      try{
+        const r = await fetch(url);
+        const j = await r.json();
+        const games = (j.data || []).slice();
+
+        if (!games.length){
+          $playing.textContent = "0";
+          $visits.textContent = "0";
+          $status.textContent = `Loaded: ${timeStamp()} (0 games returned)`;
+          return;
+        }
+
+        let totalPlaying = 0, totalVisits = 0;
+        for (const g of games){
+          totalPlaying += (g.playing || 0);
+          totalVisits  += (g.visits || 0);
+        }
+        $playing.textContent = formatCompact(totalPlaying);
+        $visits.textContent  = formatCompact(totalVisits);
+
+        // Sort by visits (biggest first)
+        games.sort((a,b) => (b.visits||0) - (a.visits||0));
+
+        const thumbs = await fetchThumbnails(UNIVERSE_IDS);
+        renderCards(games, thumbs);
+
+        $status.textContent = `Loaded: ${timeStamp()} (updates only when opened)`;
+      } catch {
+        $status.textContent = `Load failed: ${timeStamp()} (check Worker)`;
+      }
+    }
+
+    // arrows
+    document.getElementById("leftBtn").onclick  = () => $carousel.scrollBy({ left: -420, behavior: "smooth" });
+    document.getElementById("rightBtn").onclick = () => $carousel.scrollBy({ left: 420, behavior: "smooth" });
+
+    // Load only once
+    loadOnce();
+  </script>
 </body>
 </html>
