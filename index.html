@@ -453,7 +453,7 @@
 
     <!-- GAMES -->
     <section class="gamesSection" id="games">
-      <h2 class="gamesTitle">OUR GAMES</h2>
+      <h2 class="gamesTitle">MY GAMES</h2>
       <p class="gamesSub">Explore our collection of immersive Roblox experiences</p>
 
       <div class="gamesStats">
@@ -471,128 +471,146 @@
     </section>
   </main>
 
-  <script>
-    // ===== CONFIG (yours) =====
-    const WORKER_URL = "https://plusviiwebworker.loganplayzu.workers.dev/";
-    const UNIVERSE_IDS = [
-      131017193502384,
-      91653443137127,
-      82147631157822
-    ];
+<script>
+  // ===== CONFIG (yours) =====
+  const WORKER_URL = "https://plusviiwebworker.loganplayzu.workers.dev/";
+  const UNIVERSE_IDS = [
+    "9535197929",
+    "7314795657",
+    "9061511409"
+  ];
 
-    // ===== DOM =====
-    const $carousel = document.getElementById("gamesCarousel");
-    const $playing = document.getElementById("statPlaying");
-    const $visits = document.getElementById("statVisits");
-    const $status = document.getElementById("statusLine");
+  // ===== DOM =====
+  const $carousel = document.getElementById("gamesCarousel");
+  const $playing  = document.getElementById("statPlaying");
+  const $visits   = document.getElementById("statVisits");
+  const $status   = document.getElementById("statusLine");
 
-    // ===== Helpers =====
-    function formatCompact(n){
-      n = Number(n) || 0;
-      if (n >= 1e9) return (n/1e9).toFixed(1).replace(/\.0$/,'') + "B";
-      if (n >= 1e6) return (n/1e6).toFixed(1).replace(/\.0$/,'') + "M";
-      if (n >= 1e3) return (n/1e3).toFixed(1).replace(/\.0$/,'') + "K";
-      return String(n);
+  function formatCompact(n){
+    n = Number(n) || 0;
+    if (n >= 1e9) return (n/1e9).toFixed(1).replace(/\.0$/,'') + "B";
+    if (n >= 1e6) return (n/1e6).toFixed(1).replace(/\.0$/,'') + "M";
+    if (n >= 1e3) return (n/1e3).toFixed(1).replace(/\.0$/,'') + "K";
+    return String(n);
+  }
+
+  function escapeHtml(s){
+    return String(s).replace(/[&<>"']/g, c => ({
+      "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+    }[c]));
+  }
+
+  function timeStamp(){
+    const d = new Date();
+    const hh = String(d.getHours()).padStart(2,"0");
+    const mm = String(d.getMinutes()).padStart(2,"0");
+    const ss = String(d.getSeconds()).padStart(2,"0");
+    return `${hh}:${mm}:${ss}`;
+  }
+
+  async function fetchThumbnails(universeIds){
+    try{
+      const url = `https://thumbnails.roblox.com/v1/games/icons?universeIds=${universeIds.join(",")}&size=768x432&format=Png&isCircular=false`;
+      const r = await fetch(url);
+      const j = await r.json();
+      const map = new Map();
+      for (const it of (j.data || [])) map.set(String(it.targetId), it.imageUrl);
+      return map;
+    } catch {
+      return new Map();
     }
+  }
 
-    function escapeHtml(s){
-      return String(s).replace(/[&<>"']/g, c => ({
-        "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
-      }[c]));
-    }
+  function renderEmpty(message){
+    $carousel.innerHTML = `<div style="padding:14px;color:rgba(255,255,255,.75);text-align:left;">${escapeHtml(message)}</div>`;
+  }
 
-    function timeStamp(){
-      const d = new Date();
-      const hh = String(d.getHours()).padStart(2,"0");
-      const mm = String(d.getMinutes()).padStart(2,"0");
-      const ss = String(d.getSeconds()).padStart(2,"0");
-      return `${hh}:${mm}:${ss}`;
-    }
+  function renderCards(games, thumbMap){
+    $carousel.innerHTML = "";
+    for (const g of games){
+      const thumb = thumbMap.get(String(g.id)) || "";
+      const placeUrl = `https://www.roblox.com/games/${g.rootPlaceId}`;
 
-    // Thumbnails: try direct (may fail due to CORS). If it fails, we still show cards.
-    async function fetchThumbnails(universeIds){
-      try{
-        const url = `https://thumbnails.roblox.com/v1/games/icons?universeIds=${universeIds.join(",")}&size=768x432&format=Png&isCircular=false`;
-        const r = await fetch(url);
-        const j = await r.json();
-        const map = new Map();
-        for (const it of (j.data || [])) map.set(it.targetId, it.imageUrl);
-        return map;
-      } catch {
-        return new Map();
-      }
-    }
-
-    function renderCards(games, thumbMap){
-      $carousel.innerHTML = "";
-      for (const g of games){
-        const thumb = thumbMap.get(g.id) || "";
-        const placeUrl = `https://www.roblox.com/games/${g.rootPlaceId}`;
-
-        const card = document.createElement("div");
-        card.className = "gameCard";
-        card.innerHTML = `
-          ${thumb ? `<img class="gameThumb" src="${thumb}" alt="">` : `<div class="gameThumb"></div>`}
-          <div class="gameBody">
-            <h3 class="gameName">${escapeHtml(g.name || "Untitled")}</h3>
-            <div class="metaRow">
-              <span class="badge">👥 ${formatCompact(g.playing || 0)}</span>
-              <span class="badge">▶ ${formatCompact(g.visits || 0)}</span>
-            </div>
-            <a class="playBtn" href="${placeUrl}" target="_blank" rel="noreferrer">Play Now</a>
+      const card = document.createElement("div");
+      card.className = "gameCard";
+      card.innerHTML = `
+        ${thumb ? `<img class="gameThumb" src="${thumb}" alt="">` : `<div class="gameThumb"></div>`}
+        <div class="gameBody">
+          <h3 class="gameName">${escapeHtml(g.name || "Untitled")}</h3>
+          <div class="metaRow">
+            <span class="badge">👥 ${formatCompact(g.playing || 0)}</span>
+            <span class="badge">▶ ${formatCompact(g.visits || 0)}</span>
           </div>
-        `;
-        $carousel.appendChild(card);
-      }
+          <a class="playBtn" href="${placeUrl}" target="_blank" rel="noreferrer">Play Now</a>
+        </div>
+      `;
+      $carousel.appendChild(card);
     }
+  }
 
-    async function refresh(){
-      if (!UNIVERSE_IDS.length){
+  async function refresh(){
+    $status.textContent = "Updating…";
+
+    const ids = UNIVERSE_IDS.map(s => String(s).trim()).filter(Boolean).join(",");
+    const url = `${WORKER_URL}?ids=${encodeURIComponent(ids)}`;
+
+    try{
+      const r = await fetch(url);
+      const j = await r.json();
+
+      // If Worker returns an error
+      if (j && j.error){
         $playing.textContent = "—";
         $visits.textContent = "—";
-        $carousel.innerHTML = `<div style="color:rgba(255,255,255,.7);padding:14px;">Add universe IDs in the script.</div>`;
-        $status.textContent = "Missing universe IDs.";
+        renderEmpty(`Worker error: ${j.error}`);
+        $status.textContent = `Last updated: ${timeStamp()} (error)`;
         return;
       }
 
-      const ids = UNIVERSE_IDS.join(",");
-      $status.textContent = "Updating…";
+      const games = (j && j.data) ? j.data.slice() : [];
 
-      try{
-        const r = await fetch(`${WORKER_URL}?ids=${encodeURIComponent(ids)}`);
-        const j = await r.json();
-        const games = (j.data || []).slice();
-
-        // totals
-        let totalPlaying = 0;
-        let totalVisits = 0;
-        for (const g of games){
-          totalPlaying += (g.playing || 0);
-          totalVisits += (g.visits || 0);
-        }
-        $playing.textContent = formatCompact(totalPlaying);
-        $visits.textContent = formatCompact(totalVisits);
-
-        // sort: most playing first (feels nicer)
-        games.sort((a,b) => (b.playing||0) - (a.playing||0));
-
-        // thumbs (non-blocking)
-        const thumbs = await fetchThumbnails(UNIVERSE_IDS);
-        renderCards(games, thumbs);
-
-        $status.textContent = `Last updated: ${timeStamp()} (auto refresh every 30s)`;
-      } catch (e){
-        $status.textContent = `Update failed at ${timeStamp()} — check Worker URL.`;
+      // If nothing comes back, tell you EXACTLY what to check
+      if (!games.length){
+        $playing.textContent = "0";
+        $visits.textContent = "0";
+        renderEmpty(
+          "No games returned. This usually means the IDs are NOT universeIds (or Roblox returned no data). " +
+          "Open your Worker URL in a new tab to inspect the JSON response."
+        );
+        $status.textContent = `Last updated: ${timeStamp()} (0 games)`;
+        return;
       }
+
+      // totals
+      let totalPlaying = 0, totalVisits = 0;
+      for (const g of games){
+        totalPlaying += (g.playing || 0);
+        totalVisits  += (g.visits || 0);
+      }
+      $playing.textContent = formatCompact(totalPlaying);
+      $visits.textContent  = formatCompact(totalVisits);
+
+      // sort by playing
+      games.sort((a,b) => (b.playing||0) - (a.playing||0));
+
+      const thumbs = await fetchThumbnails(UNIVERSE_IDS);
+      renderCards(games, thumbs);
+
+      $status.textContent = `Last updated: ${timeStamp()} (auto refresh every 30s)`;
+    } catch (e){
+      $playing.textContent = "—";
+      $visits.textContent = "—";
+      renderEmpty("Update failed. Double-check the Worker URL is correct and returns JSON.");
+      $status.textContent = `Last updated: ${timeStamp()} (failed)`;
     }
+  }
 
-    // arrows
-    document.getElementById("leftBtn").onclick = () => $carousel.scrollBy({ left: -420, behavior: "smooth" });
-    document.getElementById("rightBtn").onclick = () => $carousel.scrollBy({ left: 420, behavior: "smooth" });
+  // arrows
+  document.getElementById("leftBtn").onclick  = () => $carousel.scrollBy({ left: -420, behavior: "smooth" });
+  document.getElementById("rightBtn").onclick = () => $carousel.scrollBy({ left: 420, behavior: "smooth" });
 
-    // load + poll
-    refresh();
-    setInterval(refresh, 30000);
-  </script>
+  refresh();
+  setInterval(refresh, 30000);
+</script>
 </body>
 </html>
