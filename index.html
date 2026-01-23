@@ -9,14 +9,12 @@
     :root{
       --bg:#060607;
       --text:#ffffff;
-      --muted:rgba(255,255,255,.70);
-      --muted2:rgba(255,255,255,.55);
+      --muted:rgba(255,255,255,.7);
       --border:rgba(255,255,255,.12);
       --border2:rgba(255,255,255,.08);
       --glass1:rgba(255,255,255,.07);
       --glass2:rgba(255,255,255,.03);
       --shadow:rgba(0,0,0,.62);
-      --link:#bfefff;
       --blue:#3b82f6;
     }
 
@@ -26,13 +24,13 @@
     body{
       margin:0;
       min-height:100vh;
-      color:var(--text);
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
       background: var(--bg);
+      color: var(--text);
       overflow-x:hidden;
     }
 
-    /* ===== Background (black + stars + floating grey balls + subtle grey glow) ===== */
+    /* ================= BACKGROUND ================= */
     .bg{
       position:fixed;
       inset:0;
@@ -49,567 +47,341 @@
       inset:-50%;
       opacity:.55;
       background-image:
-        radial-gradient(1px 1px at 8% 18%, rgba(255,255,255,0.26) 45%, transparent 46%),
-        radial-gradient(1px 1px at 18% 72%, rgba(255,255,255,0.18) 45%, transparent 46%),
-        radial-gradient(1px 1px at 27% 40%, rgba(255,255,255,0.14) 45%, transparent 46%),
-        radial-gradient(1px 1px at 35% 88%, rgba(255,255,255,0.16) 45%, transparent 46%),
-        radial-gradient(1px 1px at 46% 22%, rgba(255,255,255,0.18) 45%, transparent 46%),
-        radial-gradient(1px 1px at 58% 66%, rgba(255,255,255,0.13) 45%, transparent 46%),
-        radial-gradient(1px 1px at 64% 35%, rgba(255,255,255,0.17) 45%, transparent 46%),
-        radial-gradient(1px 1px at 73% 78%, rgba(255,255,255,0.15) 45%, transparent 46%),
-        radial-gradient(1px 1px at 82% 28%, rgba(255,255,255,0.20) 45%, transparent 46%),
-        radial-gradient(1px 1px at 92% 52%, rgba(255,255,255,0.14) 45%, transparent 46%),
-        radial-gradient(1px 1px at 12% 52%, rgba(255,255,255,0.12) 45%, transparent 46%),
-        radial-gradient(1px 1px at 52% 52%, rgba(255,255,255,0.10) 45%, transparent 46%);
+        radial-gradient(1px 1px at 10% 20%, rgba(255,255,255,.25) 40%, transparent 41%),
+        radial-gradient(1px 1px at 40% 80%, rgba(255,255,255,.18) 40%, transparent 41%),
+        radial-gradient(1px 1px at 70% 30%, rgba(255,255,255,.2) 40%, transparent 41%);
       background-size: 260px 260px;
-      animation: starDrift 22s linear infinite;
-      will-change: transform;
-      transform: translate3d(0,0,0);
+      animation: drift 22s linear infinite;
     }
 
-    @keyframes starDrift{
-      from { transform: translate3d(0,0,0); }
-      to   { transform: translate3d(190px,120px,0); }
+    @keyframes drift{
+      from{ transform:translate(0,0); }
+      to{ transform:translate(180px,120px); }
     }
 
-    .orbs{
-      position:absolute;
-      inset:0;
-      pointer-events:none;
-    }
+    .orbs{ position:absolute; inset:0; pointer-events:none; }
 
     .orb{
       position:absolute;
       border-radius:999px;
-      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.13), rgba(255,255,255,0.02) 55%, transparent 70%);
-      border: 1px solid rgba(255,255,255,0.06);
-      box-shadow: 0 0 30px rgba(255,255,255,0.03);
-      opacity: .9;
+      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.12), rgba(255,255,255,.02) 55%, transparent 70%);
+      border:1px solid rgba(255,255,255,.06);
+      box-shadow:0 0 30px rgba(255,255,255,.03);
       animation: floaty var(--dur) ease-in-out infinite;
-      will-change: transform;
     }
 
-    .o1{ width:160px; height:160px; left:10%; top:18%; --dur: 10s; }
-    .o2{ width:110px; height:110px; left:72%; top:14%; --dur: 12s; opacity:.72; }
-    .o3{ width:210px; height:210px; left:78%; top:62%; --dur: 14s; opacity:.68; }
-    .o4{ width:130px; height:130px; left:18%; top:68%; --dur: 11s; opacity:.58; }
-    .o5{ width:90px;  height:90px;  left:46%; top:78%; --dur: 9s;  opacity:.50; }
-    .o6{ width:70px;  height:70px;  left:54%; top:26%; --dur: 8s;  opacity:.46; }
+    .o1{ width:160px; height:160px; left:10%; top:18%; --dur:10s; }
+    .o2{ width:110px; height:110px; left:72%; top:14%; --dur:12s; }
+    .o3{ width:210px; height:210px; left:78%; top:62%; --dur:14s; }
+    .o4{ width:130px; height:130px; left:18%; top:68%; --dur:11s; }
+    .o5{ width:90px; height:90px; left:46%; top:78%; --dur:9s; }
+    .o6{ width:70px; height:70px; left:54%; top:26%; --dur:8s; }
 
     @keyframes floaty{
-      0%,100% { transform: translate3d(0,0,0); }
-      50%     { transform: translate3d(0, 22px, 0); }
+      0%,100%{ transform:translateY(0); }
+      50%{ transform:translateY(22px); }
     }
 
     .grain{
       position:absolute;
       inset:0;
-      opacity:.10;
-      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='.18'/%3E%3C/svg%3E");
-      mix-blend-mode: overlay;
+      opacity:.1;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='.18'/%3E%3C/svg%3E");
+      mix-blend-mode:overlay;
       pointer-events:none;
     }
 
-    /* ===== Layout ===== */
-    .container{
-      width:min(1100px, 92vw);
-      margin: 0 auto;
-      padding: 44px 0 90px;
+    /* ================= TOPBAR ================= */
+    .topbar{
+      position:sticky;
+      top:0;
+      z-index:10;
+      backdrop-filter:blur(14px);
+      background:linear-gradient(180deg, rgba(0,0,0,.6), rgba(0,0,0,.3));
+      border-bottom:1px solid rgba(255,255,255,.08);
     }
 
-    /* ===== Bio card ===== */
-    .card{
-      padding: 40px;
-      border-radius: 22px;
-      background: linear-gradient(180deg, var(--glass1), var(--glass2));
-      border: 1px solid var(--border);
-      box-shadow:
-        0 12px 46px var(--shadow),
-        inset 0 1px 0 rgba(255,255,255,0.06);
-      backdrop-filter: blur(10px);
-      position:relative;
-      overflow:hidden;
-    }
-
-    .card::before{
-      content:"";
-      position:absolute;
-      inset:-2px;
-      background: radial-gradient(520px circle at 20% 0%, rgba(255,255,255,0.10), transparent 45%);
-      pointer-events:none;
-    }
-
-    .top{
+    .topbarInner{
+      width:min(1200px,92vw);
+      height:64px;
+      margin:auto;
       display:flex;
-      align-items:flex-start;
+      align-items:center;
       justify-content:space-between;
-      gap: 18px;
-      position:relative;
-      z-index:1;
     }
 
-    h1{
-      margin:0 0 10px;
-      font-size: 42px;
-      letter-spacing:.6px;
-      line-height:1.05;
-    }
+    .brand{ font-size:22px; font-weight:700; }
 
-    .tagline{
-      margin:0;
-      color:var(--muted);
-      font-size: 16px;
-    }
-
-    .pill{
-      display:inline-flex;
-      align-items:center;
-      gap:10px;
-      padding: 10px 12px;
-      border-radius: 999px;
-      border: 1px solid var(--border2);
-      background: rgba(255,255,255,0.03);
-      white-space:nowrap;
-      color: rgba(255,255,255,0.72);
-      font-size: 13px;
-      position:relative;
-      z-index:1;
-    }
-
-    .dot{
-      width:8px;
-      height:8px;
-      border-radius:50%;
-      background: rgba(255,255,255,0.55);
-      box-shadow: 0 0 10px rgba(255,255,255,.15);
-    }
-
-    .links{
+    .topLinks{
       display:flex;
-      flex-wrap:wrap;
-      gap: 12px;
-      margin-top: 22px;
-      position:relative;
-      z-index:1;
-    }
-
-    .btn{
-      display:inline-flex;
+      gap:16px;
       align-items:center;
-      justify-content:center;
-      padding: 11px 14px;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,0.14);
-      background: rgba(255,255,255,0.03);
-      color: var(--link);
+    }
+
+    .topLinks a{
+      color:rgba(255,255,255,.8);
       text-decoration:none;
-      transition: transform .15s ease, background .15s ease, border-color .15s ease;
-      user-select:none;
+      font-size:14px;
     }
-    .btn:hover{
-      transform: translateY(-1px);
-      background: rgba(255,255,255,0.07);
-      border-color: rgba(255,255,255,0.22);
+    .topLinks a:hover{ color:#fff; }
+
+    .pillLink{
+      padding:8px 14px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.18);
+      background:rgba(255,255,255,.06);
     }
 
-    .ghostBtn{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      padding: 11px 14px;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,0.12);
-      background: rgba(0,0,0,0.12);
-      color: rgba(255,255,255,0.75);
-      text-decoration:none;
-      transition: transform .15s ease, background .15s ease, border-color .15s ease;
-    }
-    .ghostBtn:hover{
-      transform: translateY(-1px);
-      background: rgba(255,255,255,0.05);
-      border-color: rgba(255,255,255,0.20);
+    /* ================= HERO ================= */
+    .hero{
+      width:min(1200px,92vw);
+      margin:140px auto 160px;
     }
 
-    .sub{
-      margin-top: 18px;
-      color: var(--muted2);
-      font-size: 13px;
-      position:relative;
-      z-index:1;
+    .hero h1{
+      font-size:clamp(56px,9vw,120px);
+      line-height:.95;
+      margin:0 0 24px;
+      letter-spacing:-1px;
+      text-shadow:
+        0 0 40px rgba(120,180,255,.25),
+        0 0 80px rgba(120,180,255,.15);
     }
 
-    /* ===== Games section ===== */
+    .hero p{
+      font-size:18px;
+      max-width:520px;
+      color:var(--muted);
+    }
+
+    /* ================= GAMES ================= */
     .gamesSection{
-      margin-top: 46px;
+      width:min(1200px,92vw);
+      margin:auto;
       text-align:center;
     }
 
     .gamesTitle{
-      margin: 10px 0 6px;
-      letter-spacing: 6px;
-      font-weight: 700;
-      font-size: 30px;
+      letter-spacing:6px;
+      font-size:28px;
+      margin-bottom:8px;
     }
 
     .gamesSub{
-      margin: 0 0 18px;
-      color: rgba(255,255,255,.62);
-      font-size: 15px;
+      color:rgba(255,255,255,.6);
+      margin-bottom:18px;
     }
 
     .gamesStats{
       display:flex;
-      gap: 14px;
       justify-content:center;
-      flex-wrap:wrap;
-      margin-bottom: 18px;
+      gap:14px;
+      margin-bottom:18px;
     }
 
     .statPill{
+      padding:10px 14px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(255,255,255,.04);
       display:flex;
+      gap:8px;
       align-items:center;
-      gap: 10px;
-      padding: 10px 14px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.04);
-      color: rgba(255,255,255,.75);
     }
 
-    .statPill strong{
-      color: #fff;
-      font-size: 16px;
-    }
-
-    .carouselWrap{
-      position:relative;
-      margin-top: 8px;
-    }
+    .carouselWrap{ position:relative; }
 
     .carousel{
       display:flex;
-      gap: 16px;
+      gap:16px;
       overflow-x:auto;
-      scroll-behavior:smooth;
-      padding: 10px 52px 14px;
-      scrollbar-width: none;
+      padding:10px 52px 14px;
+      scrollbar-width:none;
     }
     .carousel::-webkit-scrollbar{ display:none; }
 
     .navBtn{
       position:absolute;
       top:50%;
-      transform: translateY(-50%);
-      width: 42px;
-      height: 42px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,.12);
-      background: rgba(0,0,0,.35);
-      color: #fff;
+      transform:translateY(-50%);
+      width:42px;
+      height:42px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(0,0,0,.35);
+      color:#fff;
       cursor:pointer;
-      backdrop-filter: blur(6px);
-      transition: transform .15s ease, background .15s ease, border-color .15s ease;
-      z-index: 2;
+      backdrop-filter:blur(6px);
     }
-    .navBtn:hover{
-      transform: translateY(-50%) scale(1.03);
-      background: rgba(255,255,255,.06);
-      border-color: rgba(255,255,255,.22);
-    }
-    .navBtn.left{ left: 6px; }
-    .navBtn.right{ right: 6px; }
+    .navBtn.left{ left:6px; }
+    .navBtn.right{ right:6px; }
 
     .gameCard{
-      min-width: 340px;
-      max-width: 340px;
-      border-radius: 18px;
+      min-width:340px;
+      border-radius:18px;
       overflow:hidden;
-      border: 1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.03);
-      box-shadow: 0 10px 34px rgba(0,0,0,.45);
-      transition: transform .18s ease, border-color .18s ease, background .18s ease;
-    }
-    .gameCard:hover{
-      transform: translateY(-2px);
-      border-color: rgba(255,255,255,.22);
-      background: rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(255,255,255,.03);
+      box-shadow:0 10px 34px rgba(0,0,0,.45);
     }
 
-    /* Thumbnail + bottom fade (for readability) */
-    .gameThumbWrap{
-      position: relative;
-    }
+    .gameThumbWrap{ position:relative; }
     .gameThumbWrap::after{
       content:"";
       position:absolute;
       inset:0;
-      background: linear-gradient(180deg, transparent 35%, rgba(0,0,0,.70) 100%);
-      pointer-events:none;
+      background:linear-gradient(180deg, transparent 40%, rgba(0,0,0,.75));
     }
 
     .gameThumb{
-      height: 190px;
-      display:block;
       width:100%;
-      object-fit: cover;
-      background:
-        radial-gradient(500px circle at 30% 20%, rgba(255,255,255,0.10), transparent 45%),
-        linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+      height:190px;
+      object-fit:cover;
     }
 
     .gameBody{
-      padding: 14px 14px 16px;
+      padding:14px;
       text-align:left;
     }
 
     .gameName{
-      font-size: 24px;
-      margin: 0 0 10px;
-      line-height: 1.15;
+      font-size:22px;
+      margin:0 0 10px;
     }
 
     .metaRow{
       display:flex;
-      gap: 10px;
-      flex-wrap:wrap;
-      margin-bottom: 12px;
+      gap:10px;
+      margin-bottom:12px;
     }
 
     .badge{
-      display:inline-flex;
-      align-items:center;
-      gap: 8px;
-      padding: 8px 10px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.04);
-      color: rgba(255,255,255,.78);
-      font-size: 13px;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(255,255,255,.04);
+      font-size:13px;
     }
 
     .playBtn{
       display:block;
-      width:100%;
+      padding:12px;
       text-align:center;
-      padding: 12px 14px;
-      border-radius: 14px;
+      border-radius:14px;
       text-decoration:none;
+      background:var(--blue);
       color:#fff;
-      border: 1px solid rgba(255,255,255,0.14);
-      background: rgba(59,130,246,.92);
-      transition: filter .15s ease, transform .15s ease;
-    }
-    .playBtn:hover{
-      filter: brightness(1.05);
-      transform: translateY(-1px);
     }
 
-    .statusLine{
-      margin-top: 10px;
-      font-size: 12px;
-      color: rgba(255,255,255,.48);
-    }
-
-    /* Mobile */
-    @media (max-width: 520px){
-      .container{ padding: 34px 0 70px; }
-      .card{ padding: 28px; }
-      h1{ font-size: 34px; }
-      .top{ flex-direction:column; align-items:flex-start; }
-      .btn, .ghostBtn{ width:100%; }
-      .gameCard{ min-width: 270px; max-width: 270px; }
-      .gamesTitle{ font-size: 24px; letter-spacing: 4px; }
-      .navBtn{ display:none; } /* swipe instead */
-      .carousel{ padding-left: 10px; padding-right: 10px; }
+    @media(max-width:520px){
+      .navBtn{ display:none; }
     }
   </style>
 </head>
 
 <body>
-  <div class="bg" aria-hidden="true">
+  <div class="bg">
     <div class="stars"></div>
     <div class="orbs">
-      <div class="orb o1"></div>
-      <div class="orb o2"></div>
-      <div class="orb o3"></div>
-      <div class="orb o4"></div>
-      <div class="orb o5"></div>
-      <div class="orb o6"></div>
+      <div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div>
+      <div class="orb o4"></div><div class="orb o5"></div><div class="orb o6"></div>
     </div>
     <div class="grain"></div>
   </div>
 
-  <main class="container">
-    <!-- BIO CARD -->
-    <section class="card">
-      <div class="top">
-        <div>
-          <h1>theplusvii</h1>
-          <p class="tagline">Developer · Creator · Roblox</p>
-        </div>
-
-        <div class="pill" title="Status">
-          <span class="dot"></span>
-          <span>Bio Links</span>
-        </div>
-      </div>
-
-      <nav class="links" aria-label="Links">
-        <a class="btn" href="https://github.com/theplusvii" target="_blank" rel="noreferrer">GitHub</a>
-        <a class="btn" href="https://www.roblox.com/users/4190899410/profile" target="_blank" rel="noreferrer">Roblox</a>
-        <a class="btn" href="https://discord.gg/vqQycdnQ" target="_blank" rel="noreferrer">Discord</a>
-        <a class="ghostBtn" href="#games">Scroll to Games ↓</a>
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <div class="topbarInner">
+      <div class="brand">theplusvii</div>
+      <nav class="topLinks">
+        <a href="https://github.com/theplusvii" target="_blank">GitHub</a>
+        <a href="https://www.roblox.com/users/4190899410/profile" target="_blank">Roblox</a>
+        <a href="https://discord.gg/vqQycdnQ" target="_blank">Discord</a>
+        <a href="#games" class="pillLink">Games</a>
       </nav>
+    </div>
+  </header>
 
-      <div class="sub">Tip: edit <strong>index.html</strong> in your repo to change text/links.</div>
-    </section>
+  <!-- HERO -->
+  <section class="hero">
+    <h1>
+      Build.<br>
+      Remember.<br>
+      Matter.
+    </h1>
+    <p>I create persistent Roblox experiences designed to last.</p>
+  </section>
 
-    <!-- GAMES -->
-    <section class="gamesSection" id="games">
-      <h2 class="gamesTitle">MY GAMES</h2>
-      <p class="gamesSub">All games created by @theplusvii</p>
+  <!-- GAMES -->
+  <section class="gamesSection" id="games">
+    <h2 class="gamesTitle">MY GAMES</h2>
+    <p class="gamesSub">Explore my collection of immersive Roblox experiences</p>
 
-      <div class="gamesStats">
-        <div class="statPill"><span>👥</span><strong id="statPlaying">—</strong><span>playing now</span></div>
-        <div class="statPill"><span>▶</span><strong id="statVisits">—</strong><span>total visits</span></div>
-      </div>
+    <div class="gamesStats">
+      <div class="statPill">👥 <strong id="statPlaying">—</strong></div>
+      <div class="statPill">▶ <strong id="statVisits">—</strong></div>
+    </div>
 
-      <div class="carouselWrap">
-        <button class="navBtn left" id="leftBtn" aria-label="Scroll left">‹</button>
-        <div class="carousel" id="gamesCarousel" aria-label="Games carousel"></div>
-        <button class="navBtn right" id="rightBtn" aria-label="Scroll right">›</button>
-      </div>
-
-      <div class="statusLine" id="statusLine">Loading…</div>
-    </section>
-  </main>
+    <div class="carouselWrap">
+      <button class="navBtn left" id="leftBtn">‹</button>
+      <div class="carousel" id="gamesCarousel"></div>
+      <button class="navBtn right" id="rightBtn">›</button>
+    </div>
+  </section>
 
   <script>
-    // Your Worker + universe IDs (these work with games.roblox.com/v1/games?universeIds=...)
     const WORKER_URL = "https://plusviiwebworker.loganplayzu.workers.dev/";
     const UNIVERSE_IDS = ["9535197929","7314795657","9061511409"];
 
     const $carousel = document.getElementById("gamesCarousel");
     const $playing  = document.getElementById("statPlaying");
     const $visits   = document.getElementById("statVisits");
-    const $status   = document.getElementById("statusLine");
 
-    function formatCompact(n){
-      n = Number(n) || 0;
-      if (n >= 1e9) return (n/1e9).toFixed(1).replace(/\.0$/,'') + "B";
-      if (n >= 1e6) return (n/1e6).toFixed(1).replace(/\.0$/,'') + "M";
-      if (n >= 1e3) return (n/1e3).toFixed(1).replace(/\.0$/,'') + "K";
-      return String(n);
-    }
+    const fmt = n => n>=1e6?(n/1e6).toFixed(1)+"M":n>=1e3?(n/1e3).toFixed(1)+"K":n;
 
-    function escapeHtml(s){
-      return String(s).replace(/[&<>"']/g, c => ({
-        "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
-      }[c]));
-    }
+    async function load(){
+      const r = await fetch(`${WORKER_URL}?ids=${UNIVERSE_IDS.join(",")}`);
+      const j = await r.json();
+      const games = j.data || [];
 
-    function timeStamp(){
-      const d = new Date();
-      return d.toLocaleTimeString([], { hour: "2-digit", minute:"2-digit", second:"2-digit" });
-    }
+      let p=0,v=0;
+      games.forEach(g=>{ p+=g.playing||0; v+=g.visits||0; });
+      $playing.textContent = fmt(p);
+      $visits.textContent  = fmt(v);
 
-    async function fetchThumbnails(universeIds){
-      try{
-        // Worker returns: { data: [ { universeId, thumbnails: [ { imageUrl } ] } ] }
-        const ids = universeIds.join(",");
-        const r = await fetch(`${WORKER_URL}thumbs?ids=${encodeURIComponent(ids)}`);
-        const j = await r.json();
-
-        const map = new Map();
-        for (const entry of (j.data || [])){
-          const u = entry.universeId;
-          const img = entry.thumbnails && entry.thumbnails[0] && entry.thumbnails[0].imageUrl;
-          if (u && img) map.set(String(u), img);
+      const t = await fetch(`${WORKER_URL}thumbs?ids=${UNIVERSE_IDS.join(",")}`);
+      const tj = await t.json();
+      const thumbs = new Map();
+      tj.data?.forEach(e=>{
+        if(e.universeId && e.thumbnails?.[0]?.imageUrl){
+          thumbs.set(String(e.universeId), e.thumbnails[0].imageUrl);
         }
-        return map;
-      } catch {
-        return new Map();
-      }
-    }
+      });
 
-    function renderCards(games, thumbMap){
-      $carousel.innerHTML = "";
-
-      for (const g of games){
-        // g.id = universeId, g.rootPlaceId = placeId
-        const universeId = String(g.id);
-        const thumb = thumbMap.get(universeId) || "";
-        const placeUrl = `https://www.roblox.com/games/${g.rootPlaceId}`;
-
-        const card = document.createElement("div");
-        card.className = "gameCard";
-
-        const thumbHtml = thumb
-          ? `<div class="gameThumbWrap">
-               <img class="gameThumb" src="${thumb}" alt="${escapeHtml(g.name || "Game")}">
-             </div>`
-          : `<div class="gameThumb"></div>`;
-
-        card.innerHTML = `
-          ${thumbHtml}
-          <div class="gameBody">
-            <h3 class="gameName">${escapeHtml(g.name || "Untitled")}</h3>
-            <div class="metaRow">
-              <span class="badge">👥 ${formatCompact(g.playing || 0)}</span>
-              <span class="badge">▶ ${formatCompact(g.visits || 0)}</span>
-            </div>
-            <a class="playBtn" href="${placeUrl}" target="_blank" rel="noreferrer">Play Now</a>
+      games.forEach(g=>{
+        const img = thumbs.get(String(g.id));
+        const el = document.createElement("div");
+        el.className="gameCard";
+        el.innerHTML=`
+          <div class="gameThumbWrap">
+            ${img?`<img class="gameThumb" src="${img}">`:""}
           </div>
-        `;
-
-        $carousel.appendChild(card);
-      }
+          <div class="gameBody">
+            <div class="gameName">${g.name}</div>
+            <div class="metaRow">
+              <span class="badge">👥 ${fmt(g.playing||0)}</span>
+              <span class="badge">▶ ${fmt(g.visits||0)}</span>
+            </div>
+            <a class="playBtn" href="https://www.roblox.com/games/${g.rootPlaceId}" target="_blank">Play Now</a>
+          </div>`;
+        $carousel.appendChild(el);
+      });
     }
 
-    async function loadOnce(){
-      $status.textContent = "Loading…";
+    document.getElementById("leftBtn").onclick  = () => $carousel.scrollBy({ left:-420, behavior:"smooth" });
+    document.getElementById("rightBtn").onclick = () => $carousel.scrollBy({ left:420, behavior:"smooth" });
 
-      const ids = UNIVERSE_IDS.join(",");
-      const url = `${WORKER_URL}?ids=${encodeURIComponent(ids)}`;
-
-      try{
-        const r = await fetch(url);
-        const j = await r.json();
-        const games = (j.data || []).slice();
-
-        if (!games.length){
-          $playing.textContent = "0";
-          $visits.textContent = "0";
-          $status.textContent = `Loaded: ${timeStamp()} (0 games returned)`;
-          return;
-        }
-
-        let totalPlaying = 0, totalVisits = 0;
-        for (const g of games){
-          totalPlaying += (g.playing || 0);
-          totalVisits  += (g.visits || 0);
-        }
-        $playing.textContent = formatCompact(totalPlaying);
-        $visits.textContent  = formatCompact(totalVisits);
-
-        // Sort by visits (biggest first)
-        games.sort((a,b) => (b.visits||0) - (a.visits||0));
-
-        const thumbs = await fetchThumbnails(UNIVERSE_IDS);
-        renderCards(games, thumbs);
-
-        $status.textContent = `Loaded: ${timeStamp()} (updates only when opened)`;
-      } catch {
-        $status.textContent = `Load failed: ${timeStamp()} (check Worker)`;
-      }
-    }
-
-    // arrows
-    document.getElementById("leftBtn").onclick  = () => $carousel.scrollBy({ left: -420, behavior: "smooth" });
-    document.getElementById("rightBtn").onclick = () => $carousel.scrollBy({ left: 420, behavior: "smooth" });
-
-    // Load only once
-    loadOnce();
+    load();
   </script>
 </body>
 </html>
