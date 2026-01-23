@@ -508,18 +508,18 @@
     return `${hh}:${mm}:${ss}`;
   }
 
-  async function fetchThumbnails(universeIds){
-    try{
-      const url = `https://thumbnails.roblox.com/v1/games/icons?universeIds=${universeIds.join(",")}&size=768x432&format=Png&isCircular=false`;
-      const r = await fetch(url);
-      const j = await r.json();
-      const map = new Map();
-      for (const it of (j.data || [])) map.set(String(it.targetId), it.imageUrl);
-      return map;
-    } catch {
-      return new Map();
-    }
+async function fetchThumbnails(universeIds){
+  try{
+    const ids = universeIds.join(",");
+    const r = await fetch(`${WORKER_URL}thumbs?ids=${encodeURIComponent(ids)}`);
+    const j = await r.json();
+    const map = new Map();
+    for (const it of (j.data || [])) map.set(String(it.targetId), it.imageUrl);
+    return map;
+  } catch {
+    return new Map();
   }
+}
 
   function renderEmpty(message){
     $carousel.innerHTML = `<div style="padding:14px;color:rgba(255,255,255,.75);text-align:left;">${escapeHtml(message)}</div>`;
@@ -610,7 +610,6 @@
   document.getElementById("rightBtn").onclick = () => $carousel.scrollBy({ left: 420, behavior: "smooth" });
 
   refresh();
-  setInterval(refresh, 30000);
 </script>
 </body>
 </html>
