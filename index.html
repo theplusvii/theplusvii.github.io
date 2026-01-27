@@ -5,8 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>theplusvii</title>
 
+  <!-- Update this build string whenever you deploy -->
+  <meta name="x-build" content="2026-01-27-01" />
+
   <!-- CACHE-BUSTED CSS -->
-  <link rel="stylesheet" href="styles.css?v=1">
+  <link rel="stylesheet" href="styles.css?v=2026-01-27-01">
 </head>
 
 <body>
@@ -19,15 +22,31 @@
     <div class="grain"></div>
   </div>
 
-  <!-- TOPBAR -->
-  <header class="topbar">
+  <!-- TOPBAR (floating glass pill) -->
+  <header class="topbar" id="home">
     <div class="topbarInner">
-      <div class="brand">theplusvii</div>
-      <nav class="topLinks">
-        <a href="https://github.com/theplusvii" target="_blank">GitHub</a>
-        <a href="https://www.roblox.com/users/4190899410/profile" target="_blank">Roblox</a>
-        <a href="https://discord.gg/vqQycdnQ" target="_blank">Discord</a>
-        <a href="#games" class="pillLink">Games</a>
+      <a class="brand" href="#home" aria-label="Home">
+        <div class="brandBadge"><span class="brandMark">VII</span></div>
+        <div class="brandText">
+          <div class="brandName">theplusvii</div>
+          <div class="brandTag">CREATED TO REMEMBER</div>
+        </div>
+      </a>
+
+      <nav class="topLinks" aria-label="Primary">
+        <a class="navItem" href="#games">Games</a>
+
+        <a class="navIconBtn" href="https://github.com/theplusvii" target="_blank" rel="noreferrer" title="GitHub">
+          <span aria-hidden="true">⌁</span>
+        </a>
+
+        <a class="navIconBtn" href="https://www.roblox.com/users/4190899410/profile" target="_blank" rel="noreferrer" title="Roblox">
+          <span aria-hidden="true">R</span>
+        </a>
+
+        <button class="navIconBtn" id="discordCopyBtn" type="button" title="Copy Discord invite">
+          <span aria-hidden="true">✦</span>
+        </button>
       </nav>
     </div>
   </header>
@@ -39,26 +58,59 @@
       Remember.
     </h1>
     <p>I create Roblox games designed to last.</p>
+
+    <div class="heroCtas">
+      <a class="heroBtnPrimary" href="#games">Explore Games →</a>
+      <button class="heroBtnGhost" id="discordCopyBtn2" type="button">Copy Discord</button>
+    </div>
   </section>
 
   <!-- GAMES -->
   <section class="gamesSection" id="games">
-    <h2 class="gamesTitle">MY GAMES</h2>
-    <p class="gamesSub">All games created by @theplusvii</p>
+    <div class="gamesHead">
+      <div>
+        <h2 class="gamesTitle">MY GAMES</h2>
+        <p class="gamesSub">All games created by @theplusvii</p>
+      </div>
 
-    <div class="gamesStats">
-      <div class="statPill">👥 <strong id="statPlaying">—</strong></div>
-      <div class="statPill">▶ <strong id="statVisits">—</strong></div>
+      <div class="gamesStats">
+        <div class="statPill">👥 <strong id="statPlaying">—</strong></div>
+        <div class="statPill">▶ <strong id="statVisits">—</strong></div>
+        <div class="statPill">◆ <strong id="statCount">—</strong></div>
+      </div>
     </div>
 
     <div class="carouselWrap">
-      <button class="navBtn left" id="leftBtn">‹</button>
+      <button class="navBtn left" id="leftBtn" aria-label="Scroll left">‹</button>
       <div class="carousel" id="gamesCarousel"></div>
-      <button class="navBtn right" id="rightBtn">›</button>
+      <button class="navBtn right" id="rightBtn" aria-label="Scroll right">›</button>
+    </div>
+
+    <!-- Bottom bar (like the reference “bottom view”) -->
+    <div class="bottomBar">
+      <div class="bottomStat">
+        <div class="bottomNum" id="bottomVisits">—</div>
+        <div class="bottomLabel">TOTAL VISITS</div>
+      </div>
+      <div class="bottomStat">
+        <div class="bottomNum" id="bottomGames">—</div>
+        <div class="bottomLabel">GAMES</div>
+      </div>
+      <div class="bottomStat">
+        <div class="bottomNum" id="bottomPlaying">—</div>
+        <div class="bottomLabel">PLAYING NOW</div>
+      </div>
+      <div class="bottomStat">
+        <div class="bottomNum">VII</div>
+        <div class="bottomLabel">BRAND</div>
+      </div>
     </div>
   </section>
 
+  <!-- TOAST -->
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
   <!-- CACHE-BUSTED JS -->
-  <script src="script.js?v=1"></script>
+  <script src="script.js?v=2026-01-27-01"></script>
 </body>
 </html>
