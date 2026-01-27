@@ -1,5 +1,5 @@
 const WORKER_URL = "https://plusviiwebworker.loganplayzu.workers.dev/";
-const UNIVERSE_IDS = ["9535197929","7314795657","9061511409"];
+const UNIVERSE_IDS = ["9535197929","7314795657","9061511409","9551746424"];
 
 const $carousel = document.getElementById("gamesCarousel");
 const $playing  = document.getElementById("statPlaying");
