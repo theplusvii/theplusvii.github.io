@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>theplusvii</title>
-  <link rel="stylesheet" href="styles.css?v=2">
+  <link rel="stylesheet" href="styles.css?v=3">
 </head>
 
 <body>
@@ -17,9 +17,10 @@
     <div class="grain"></div>
   </div>
 
+  <!-- TOPBAR -->
   <header class="topbar" id="top">
     <div class="topbarInner">
-      <a class="brand" href="#home" aria-label="Home">
+      <a class="brand" href="#top" aria-label="Home">
         <div class="brandBadge"><span class="brandMark">VII</span></div>
         <div class="brandText">
           <div class="brandName">theplusvii</div>
@@ -28,7 +29,7 @@
       </a>
 
       <nav class="navPill" aria-label="Primary">
-        <a class="navItem" href="#home">Home</a>
+        <a class="navItem" href="#top">Home</a>
         <a class="navItem" href="#games">Games</a>
         <a class="navItem" href="#links">Links</a>
 
@@ -36,6 +37,7 @@
           <img class="navIconImg" src="https://i.imgur.com/nGDTh9U.png" alt="">
         </a>
 
+        <!-- put your actual group link here if you want -->
         <a class="navIconBtn" href="https://www.roblox.com/groups/" target="_blank" rel="noreferrer" title="Roblox Group">
           <img class="navIconImg" src="https://i.imgur.com/FwopVuZ.png" alt="">
         </a>
@@ -47,97 +49,91 @@
     </div>
   </header>
 
-  <main class="pages">
-    <section class="page" id="homePage" data-page="home">
-      <div class="pageInner hero">
-        <h1>
-          Created To<br>
-          Remember.
-        </h1>
-        <p>I create Roblox games designed to last.</p>
+  <!-- HERO -->
+  <section class="hero">
+    <h1>Created To<br>Remember.</h1>
+    <p>I create Roblox games designed to last.</p>
 
-        <div class="heroRow">
-          <a class="heroBtnPrimary" href="#games">View Games →</a>
-          <a class="heroBtnGhost" href="#links">Links</a>
-        </div>
+    <div class="heroRow">
+      <a class="heroBtnPrimary" href="#games">View Games →</a>
+      <a class="heroBtnGhost" href="#links">Links</a>
+    </div>
+  </section>
+
+  <!-- GAMES -->
+  <section class="gamesSection" id="games">
+    <div class="gamesHead">
+      <div>
+        <h2 class="gamesTitle">MY GAMES</h2>
+        <p class="gamesSub">All games created by @theplusvii</p>
       </div>
-    </section>
 
-    <section class="page" id="gamesPage" data-page="games">
-      <div class="pageInner gamesSection">
-        <div class="gamesHead">
-          <div>
-            <h2 class="gamesTitle">MY GAMES</h2>
-            <p class="gamesSub">All games created by @theplusvii</p>
-          </div>
-
-          <div class="gamesStats">
-            <div class="statPill">👥 <strong id="statPlaying">—</strong></div>
-            <div class="statPill">▶ <strong id="statVisits">—</strong></div>
-          </div>
-        </div>
-
-        <div class="carouselWrap">
-          <button class="navBtn left" id="leftBtn" aria-label="Scroll left">‹</button>
-          <div class="carousel" id="gamesCarousel"></div>
-          <button class="navBtn right" id="rightBtn" aria-label="Scroll right">›</button>
-        </div>
-
-        <div class="bottomBar">
-          <div class="bottomStat">
-            <div class="bottomNum" id="bottomVisits">—</div>
-            <div class="bottomLabel">TOTAL VISITS</div>
-          </div>
-          <div class="bottomStat">
-            <div class="bottomNum" id="bottomGames">—</div>
-            <div class="bottomLabel">GAMES</div>
-          </div>
-          <div class="bottomStat">
-            <div class="bottomNum" id="bottomPlaying">—</div>
-            <div class="bottomLabel">PLAYING NOW</div>
-          </div>
-          <div class="bottomStat">
-            <div class="bottomNum">VII</div>
-            <div class="bottomLabel">BRAND</div>
-          </div>
-        </div>
+      <div class="gamesStats">
+        <div class="statPill">👥 <strong id="statPlaying">—</strong></div>
+        <div class="statPill">▶ <strong id="statVisits">—</strong></div>
+        <div class="statPill">◆ <strong id="statCount">—</strong></div>
       </div>
-    </section>
+    </div>
 
-    <section class="page" id="linksPage" data-page="links">
-      <div class="pageInner links">
-        <h2 class="linksTitle">LINKS</h2>
-        <p class="linksSub">Everything in one clean place.</p>
+    <div class="carouselWrap">
+      <button class="navBtn left" id="leftBtn" aria-label="Scroll left">‹</button>
+      <div class="carousel" id="gamesCarousel"></div>
+      <button class="navBtn right" id="rightBtn" aria-label="Scroll right">›</button>
+    </div>
 
-        <div class="linksGrid">
-          <a class="linkCard" href="https://www.roblox.com/users/4190899410/profile" target="_blank" rel="noreferrer">
-            <div class="linkIcon"><img src="https://i.imgur.com/nGDTh9U.png" alt=""></div>
-            <div class="linkText">
-              <div class="linkName">Roblox Profile</div>
-              <div class="linkDesc">Follow / check games</div>
-            </div>
-          </a>
-
-          <a class="linkCard" href="https://www.roblox.com/groups/" target="_blank" rel="noreferrer">
-            <div class="linkIcon"><img src="https://i.imgur.com/FwopVuZ.png" alt=""></div>
-            <div class="linkText">
-              <div class="linkName">Roblox Group</div>
-              <div class="linkDesc">Join the community</div>
-            </div>
-          </a>
-
-          <a class="linkCard" href="https://discord.gg/vqQycdnQ" target="_blank" rel="noreferrer">
-            <div class="linkIcon"><img src="https://i.imgur.com/LJCae5f.png" alt=""></div>
-            <div class="linkText">
-              <div class="linkName">Discord</div>
-              <div class="linkDesc">Talk / updates</div>
-            </div>
-          </a>
-        </div>
+    <div class="bottomBar">
+      <div class="bottomStat">
+        <div class="bottomNum" id="bottomVisits">—</div>
+        <div class="bottomLabel">TOTAL VISITS</div>
       </div>
-    </section>
-  </main>
+      <div class="bottomStat">
+        <div class="bottomNum" id="bottomGames">—</div>
+        <div class="bottomLabel">GAMES</div>
+      </div>
+      <div class="bottomStat">
+        <div class="bottomNum" id="bottomPlaying">—</div>
+        <div class="bottomLabel">PLAYING NOW</div>
+      </div>
+      <div class="bottomStat">
+        <div class="bottomNum">VII</div>
+        <div class="bottomLabel">BRAND</div>
+      </div>
+    </div>
+  </section>
 
-  <script src="script.js?v=2"></script>
+  <!-- LINKS -->
+  <section class="linksSection" id="links">
+    <h2 class="linksTitle">LINKS</h2>
+    <p class="linksSub">Everything in one clean place.</p>
+
+    <div class="linksGrid">
+      <a class="linkCard" href="https://www.roblox.com/users/4190899410/profile" target="_blank" rel="noreferrer">
+        <div class="linkIcon"><img src="https://i.imgur.com/nGDTh9U.png" alt=""></div>
+        <div class="linkText">
+          <div class="linkName">Roblox Profile</div>
+          <div class="linkDesc">Follow / check games</div>
+        </div>
+      </a>
+
+      <!-- put your real group link here -->
+      <a class="linkCard" href="https://www.roblox.com/groups/" target="_blank" rel="noreferrer">
+        <div class="linkIcon"><img src="https://i.imgur.com/FwopVuZ.png" alt=""></div>
+        <div class="linkText">
+          <div class="linkName">Roblox Group</div>
+          <div class="linkDesc">Join the community</div>
+        </div>
+      </a>
+
+      <a class="linkCard" href="https://discord.gg/vqQycdnQ" target="_blank" rel="noreferrer">
+        <div class="linkIcon"><img src="https://i.imgur.com/LJCae5f.png" alt=""></div>
+        <div class="linkText">
+          <div class="linkName">Discord</div>
+          <div class="linkDesc">Talk / updates</div>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <script src="script.js?v=3"></script>
 </body>
 </html>
